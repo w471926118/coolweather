@@ -2,6 +2,8 @@ package coolweather.ewen.com.coolweather.util;
 
 import android.text.TextUtils;
 
+import com.google.gson.Gson;
+
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -9,6 +11,7 @@ import org.json.JSONObject;
 import coolweather.ewen.com.coolweather.db.City;
 import coolweather.ewen.com.coolweather.db.County;
 import coolweather.ewen.com.coolweather.db.Province;
+import coolweather.ewen.com.coolweather.gson.Weather;
 
 /**
  * Created by Ewen on 2017/4/15.
@@ -81,5 +84,20 @@ public class Utility {
             }
         }
         return false;
+    }
+
+    /**
+     * 将返回的 JSON 数据解析成 Weather 实体类
+     */
+    public static Weather handleWeatherResonse(String response) {
+        try {
+            JSONObject jsonObject = new JSONObject(response);
+            JSONArray jsonArray = jsonObject.getJSONArray("HeWeather");
+            String weatherContent = jsonArray.getJSONArray(0).toString();
+            return new Gson().fromJson(weatherContent, Weather.class);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return null;
     }
 }
