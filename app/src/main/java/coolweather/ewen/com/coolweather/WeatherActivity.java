@@ -19,12 +19,13 @@ import android.widget.ScrollView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.bumptech.glide.Glide;
 
 import java.io.IOException;
-import com.bumptech.glide.Glide;
 
 import coolweather.ewen.com.coolweather.gson.Forecast;
 import coolweather.ewen.com.coolweather.gson.Weather;
+import coolweather.ewen.com.coolweather.service.AutoUpdateService;
 import coolweather.ewen.com.coolweather.util.HttpUtil;
 import coolweather.ewen.com.coolweather.util.Utility;
 import okhttp3.Call;
@@ -140,6 +141,8 @@ public class WeatherActivity extends AppCompatActivity {
                             editor.putString("weather", responseText);
                             editor.apply();
                             showWeatherInfo(weather);
+                            Intent intent = new Intent(this, AutoUpdateService.class);
+                            startService(intent);
                         } else {
                             Toast.makeText(WeatherActivity.this, "获取天气信息失败", Toast.LENGTH_SHORT).show();
                         }
